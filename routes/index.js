@@ -6,39 +6,38 @@ const mongoose = require('mongoose')
 /* GET home page. */
 
 
-/*router.get('/search-trip', (req, res,) => {
-  Trip.find({} )
+router.get('/search-trip', (req, res,) => {
+  Trip.findOne({ departure: (req.body.departure), arrival: (req.body.arrival)})
   .then(data => {
-
-console.log("Nombre de documents dans trips:", count);
-    console.log(data)
  if(data) {
-  res.json({result: true ,trajet : data})
+  res.json({trajet : data})
  } else {
   res.json({result: false, error: "pas de trajet trouvé"})
  }
 })
-});*/
+});
 
-router.get('/search-trip', (req, res) => {
-  // Log les collections disponibles
-  mongoose.connection.db.listCollections().toArray()
-    .then(collections => {
-      console.log("Collections disponibles:", collections.map(c => c.name));
-      return Trip.find({});
-    })
+
+router.post('/search-trip', (req, res) => {
+  // Données de test en dur
+  const newTrip = new Trip({
+    departure: "Paris",
+    arrival: "Lyon",
+    date: new Date("2024-02-20"),
+    price: 75
+  });
+
+  newTrip.save()
     .then(data => {
-      console.log("Données trouvées:", data);
-      if(data) {
-        res.json({result: true, trajet: data});
-      } else {
-        res.json({result: false, error: "pas de trajet trouvé"});
-      }
+      console.log("Trip créé:", data);
+      res.json({ result: true, trajet: data });
     })
     .catch(error => {
-      console.error("Erreur:", error);
-      res.json({result: false, error: error.message});
+      console.error("Erreur lors de la création:", error);
+      res.json({ result: false, error: error.message });
     });
 });
+
+
 
 module.exports = router;
