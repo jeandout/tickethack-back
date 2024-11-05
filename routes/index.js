@@ -1,13 +1,13 @@
 var express = require('express');
 var router = express.Router();
 const Trip = require('../models/trip')
-const mongoose = require('mongoose')
+
 
 /* GET home page. */
 
 
 router.get('/search-trip', (req, res,) => {
-  Trip.findOne({ departure: (req.body.departure), arrival: (req.body.arrival)})
+  Trip.find({ })
   .then(data => {
  if(data) {
   res.json({trajet : data})
