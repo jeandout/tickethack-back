@@ -1,12 +1,16 @@
 const mongoose = require("mongoose");
 
 const tripSchema = mongoose.Schema({
-    Departure: String,
-    Arrival: String,
-    Date: Date,
-    Price: Number
+    departure: String,
+    arrival: String,
+    date: Date,
+    price: Number
   });
 
-  const Trip = mongoose.model("trip", tripSchema);
+  const Trip = mongoose.model("trips", tripSchema);
+  const Cart = mongoose.model('cart', tripSchema)
+  const Booked = mongoose.model('booked', tripSchema)
 
   module.exports = Trip;
+  module.exports = Cart;
+  module.exports = Booked;
