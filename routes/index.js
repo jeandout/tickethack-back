@@ -32,18 +32,17 @@ router.post('/add-to-cart/:tripId', (req, res) => {
 
   Trip.findById(tripId)
       .then(trip => {
-          const newCart = new Cart({
-              departure: trip.departure,
-              arrival: trip.arrival,
-              date: trip.date,
-              price: trip.price
+      const newCart = new Cart({
+        departure: trip.departure,
+        arrival: trip.arrival,
+        date: trip.date,
+        price: trip.price
           });
 
           newCart.save()
-              .then(cartEntry => {
-                  res.json({ result: true, cart: cartEntry });
-                  
-              });
+            .then(cartEntry => {
+            res.json({ result: true, cart: cartEntry });
+            });
       });
 });
 
