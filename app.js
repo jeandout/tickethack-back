@@ -21,8 +21,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 const cors = require('cors');
 app.use(cors());
 
+
+
 app.use('/', indexRouter);
 app.use('/trip', tripRouter)
 app.use('/cart', cartRouter)
 app.use('/booking', bookingRouter)
+
 module.exports = app;
