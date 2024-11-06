@@ -1,43 +1,42 @@
 var express = require('express');
 var router = express.Router();
 const Trip = require('../models/trip')
+const Cart = require('../models/cart')
 
+/* GET search trip */
+router.get('/search-trip/:departure/:arrival/:date', (req, res) => {
+  const { departure, arrival, date } = req.params;
+  const startDate = new Date(date);
+  startDate.setHours(0, 0, 0, 0);
 
-/* GET home page. */
-
-
-router.get('/search-trip', (req, res,) => {
-  Trip.find()
+  const endDate = new Date(date);
+  endDate.setHours(23, 59, 59, 999);
+  Trip.find({
+    departure,
+    arrival,
+    date: { $gte: startDate, $lte: endDate }
+  })
   .then(data => {
- if(data) {
-  res.json({trajet : data})
- } else {
-  res.json({result: false, error: "pas de trajet trouvé"})
- }
-})
+    if (data && data.length > 0) {
+      res.json({ trajet: data });
+    } else {
+      res.json({ result: false, error: "Pas de trajet trouvé" });
+    }
+  });
 });
 
-
-router.post('/search-trip', (req, res) => {
-  // Données de test en dur
-  const newTrip = new Trip({
-    departure: "Paris",
-    arrival: "Lyon",
-    date: new Date("2024-02-20"),
-    price: 75
+/* POST add to cart */
+router.post('/add-to-cart', (req, res) => {
+  const newCart = new Cart({
+    departure: req.body.departure,
+    arrival : req.body.arrival,
+    price: req.body.price,
+    date : req.body.date
   });
-
-  newTrip.save()
-    .then(data => {
-      console.log("Trip créé:", data);
-      res.json({ result: true, trajet: data });
-    })
-    .catch(error => {
-      console.error("Erreur lors de la création:", error);
-      res.json({ result: false, error: error.message });
+  newCart.save()
+    .then(trip => {
+      res.json({ result: true, trip });
     });
 });
-
-
 
 module.exports = router;
