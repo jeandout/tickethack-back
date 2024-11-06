@@ -7,7 +7,7 @@ const Trip = require('../models/trip')
 
 
 router.get('/search-trip', (req, res,) => {
-  Trip.find({ })
+  Trip.find()
   .then(data => {
  if(data) {
   res.json({trajet : data})
