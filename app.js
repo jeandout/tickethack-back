@@ -8,6 +8,7 @@ var tripRouter = require('./models/trip')
 var cartRouter = require('./models/cart')
 var bookingRouter = require('./models/booking')
 var indexRouter = require('./routes/index');
+const cors = require ('cors')
 
 
 
@@ -18,6 +19,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(cors());
 app.use('/', indexRouter);
 app.use('/trip', tripRouter)
 app.use('/cart', cartRouter)

@@ -7,6 +7,6 @@ const bookingSchema = mongoose.Schema({
     price: Number
   });
 
-  const Cart = mongoose.model("booking", bookingSchema);
+  const Booking = mongoose.model("booking", bookingSchema);
 
   module.exports = Booking;
