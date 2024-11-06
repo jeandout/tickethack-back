@@ -64,6 +64,11 @@ router.delete("/delete-card/:tripId", (req, res) => {
   })
 })
 
-/*POST item card to booking */
+/*POST item card to booking*/ 
+
+router.get('/bookings', (req, res) => {
+  Booking.find()
+    .then(bookings => res.json({ bookings }))
+})
 
 module.exports = router;
