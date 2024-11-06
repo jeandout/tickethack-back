@@ -42,6 +42,7 @@ router.post('/add-to-cart/:tripId', (req, res) => {
           newCart.save()
               .then(cartEntry => {
                   res.json({ result: true, cart: cartEntry });
+                  
               });
       });
 });
@@ -50,7 +51,11 @@ router.post('/add-to-cart/:tripId', (req, res) => {
 
 router.get("/check-booked", (req, res) => {
   Cart.find().then(data => {
+    if (data && data.length > 0) {
   res.json({ cart: data });
+} else {
+  res.json({ result: false, error: "Pas de trajet trouvé" });
+}
 });
 })
 
