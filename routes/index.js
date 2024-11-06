@@ -8,7 +8,6 @@ router.get('/search-trip/:departure/:arrival/:date', (req, res) => {
   const { departure, arrival, date } = req.params;
   const startDate = new Date(date);
   startDate.setHours(0, 0, 0, 0);
-
   const endDate = new Date(date);
   endDate.setHours(23, 59, 59, 999);
   Trip.find({
@@ -25,18 +24,24 @@ router.get('/search-trip/:departure/:arrival/:date', (req, res) => {
   });
 });
 
-/* POST add to cart */
-router.post('/add-to-cart', (req, res) => {
-  const newCart = new Cart({
-    departure: req.body.departure,
-    arrival : req.body.arrival,
-    price: req.body.price,
-    date : req.body.date
-  });
-  newCart.save()
-    .then(trip => {
-      res.json({ result: true, trip });
-    });
+
+router.post('/add-to-cart/:tripId', (req, res) => {
+  const { tripId } = req.params;
+
+  Trip.findById(tripId)
+      .then(trip => {
+          const newCart = new Cart({
+              departure: trip.departure,
+              arrival: trip.arrival,
+              date: trip.date,
+              price: trip.price
+          });
+
+          newCart.save()
+              .then(cartEntry => {
+                  res.json({ result: true, cart: cartEntry });
+              });
+      });
 });
 
 module.exports = router;
