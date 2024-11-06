@@ -4,6 +4,7 @@ const Trip = require('../models/trip')
 const Cart = require('../models/cart')
 
 /* GET search trip */
+
 router.get('/search-trip/:departure/:arrival/:date', (req, res) => {
   const { departure, arrival, date } = req.params;
   const startDate = new Date(date);
@@ -24,6 +25,7 @@ router.get('/search-trip/:departure/:arrival/:date', (req, res) => {
   });
 });
 
+/*POST add trip to card*/
 
 router.post('/add-to-cart/:tripId', (req, res) => {
   const { tripId } = req.params;
@@ -43,5 +45,25 @@ router.post('/add-to-cart/:tripId', (req, res) => {
               });
       });
 });
+
+/*GET card*/
+
+router.get("/check-booked", (req, res) => {
+  Cart.find().then(data => {
+  res.json({ cart: data });
+});
+})
+
+/*DELETE item card */
+
+router.delete("/delete-card/:tripId", (req, res) => {
+  const { tripId } = req.params;
+  Cart.deleteOne({_id: tripId}).then(data =>{
+    if (data.deletedCount > 0)
+    res.json({result: true, message: "item deleted"})
+  })
+})
+
+/*POST item card to booking */
 
 module.exports = router;
